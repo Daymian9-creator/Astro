@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
@@ -35,7 +35,7 @@
       font-family: 'Inter', sans-serif;
     }
     .led-glow {
-      filter: drop-shadow(0 0 6px rgba(139, 233, 253, 0.85));
+      filter: drop-shadow(0 0 8px rgba(139, 233, 253, 0.9));
     }
     .astro-float {
       animation: float 4.5s ease-in-out infinite;
@@ -53,25 +53,75 @@
     }
   </style>
 </head>
-<body class="antialiased selection:bg-carbon selection:text-iceLed">
+<body class="antialiased selection:bg-carbon selection:text-iceLed overflow-hidden" id="main-body">
 
-  <!-- Barra superior minimalista estilo GAZU -->
-  <div class="bg-carbon text-stoneLight text-[10px] tracking-[0.2em] uppercase py-2 px-4 md:px-10 flex justify-between items-center">
-    <span>ENVÍO GLOBAL GRATUITO EN EDICIONES FUNDADOR</span>
-    <div class="hidden sm:flex gap-6">
-      <a href="#studio" class="hover:text-iceLed transition">FIRMWARE v2.4</a>
-      <a href="#cuenta-gmail" class="hover:text-iceLed transition">ASTRO ID</a>
-      <a href="#anuncios" class="hover:text-iceLed transition">NOVEDADES</a>
+  <!-- OVERLAY NEGRA DE ACCESO (75% OPACIDAD VISIBLE SOBRE LA PÁGINA DE INICIO) -->
+  <div id="access-overlay" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-[3px] transition-opacity duration-500">
+    <div class="w-full max-w-lg bg-carbon/95 border border-white/15 p-8 md:p-10 text-stoneLight shadow-2xl relative">
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-iceLed animate-pulse"></span>
+          <span class="font-mono text-[11px] tracking-[0.25em] uppercase text-iceLed">ACCESO RESTRINGIDO // ASTRO OS</span>
+        </div>
+        <span class="font-mono text-[10px] text-stoneLight/50">v2.4</span>
+      </div>
+
+      <h2 class="text-2xl md:text-3xl font-extrabold tracking-[0.15em] uppercase text-white">
+        CLAVE DE ACCESO ASTRO
+      </h2>
+      <p class="text-xs text-stoneLight/75 mt-2 leading-relaxed">
+        Introduce tu código de autorización para desbloquear la plataforma completa, el estudio IA, editor LED y tienda oficial.
+      </p>
+
+      <!-- Barra estilo buscador para ingresar clave -->
+      <form onsubmit="unlockSite(event)" class="mt-7">
+        <div class="flex items-center bg-charcoal border border-white/25 focus-within:border-iceLed transition">
+          <span class="pl-4 text-iceLed">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+            </svg>
+          </span>
+          <input
+            id="overlay-key-input"
+            type="text"
+            placeholder="ESCRIBE LA CLAVE (EJ. ASTRO)..."
+            autocomplete="off"
+            class="w-full bg-transparent px-4 py-4 text-sm font-mono uppercase tracking-[0.2em] text-iceLed placeholder:text-white/35 focus:outline-none"
+            required
+          />
+          <button type="submit" class="bg-iceLed text-carbon font-bold text-xs tracking-[0.2em] uppercase px-6 py-4 hover:bg-iceGlow transition shrink-0">
+            ENTRAR
+          </button>
+        </div>
+        <p id="overlay-error" class="text-xs font-mono text-red-400 mt-3 hidden">
+          Clave incorrecta. Prueba con <strong class="text-iceLed">ASTRO</strong> para acceder.
+        </p>
+      </form>
+
+      <div class="mt-6 pt-5 border-t border-white/10 flex justify-between items-center text-[11px] font-mono text-stoneLight/60">
+        <span>CLAVE MAESTRA: <strong class="text-iceLed select-all">ASTRO</strong></span>
+        <span>EDICIÓN FUNDADOR 2026</span>
+      </div>
     </div>
   </div>
 
-  <!-- Navegación Principal -->
+  <!-- BARRA SUPERIOR MINIMALISTA ESTILO GAZU -->
+  <div class="bg-carbon text-stoneLight text-[10px] tracking-[0.2em] uppercase py-2 px-4 md:px-10 flex justify-between items-center">
+    <span>ENVÍO GLOBAL GRATUITO EN EDICIONES FUNDADOR</span>
+    <div class="hidden sm:flex gap-6">
+      <a href="#sobre-astro" class="hover:text-iceLed transition">SOBRE ASTRO</a>
+      <a href="#studio" class="hover:text-iceLed transition">STUDIO IA</a>
+      <a href="#cuenta-gmail" class="hover:text-iceLed transition">GMAIL ID</a>
+    </div>
+  </div>
+
+  <!-- NAVEGACIÓN PRINCIPAL -->
   <header class="sticky top-0 z-40 bg-stoneBg/90 backdrop-blur-md border-b border-carbon/10">
     <div class="max-w-7xl mx-auto px-4 md:px-10 h-16 flex items-center justify-between">
       <nav class="hidden md:flex items-center gap-7 text-xs font-medium tracking-[0.15em] uppercase">
         <a href="#inicio" class="hover:opacity-60 transition">INICIO</a>
-        <a href="#partes" class="hover:opacity-60 transition">ANATOMÍA</a>
-        <a href="#tienda" class="hover:opacity-60 transition">TIENDA</a>
+        <a href="#sobre-astro" class="hover:opacity-60 transition">SOBRE ASTRO</a>
+        <a href="#studio" class="hover:opacity-60 transition">EDITOR &amp; IA</a>
         <a href="#anuncios" class="hover:opacity-60 transition">ANUNCIOS</a>
       </nav>
 
@@ -80,11 +130,11 @@
       </a>
 
       <div class="flex items-center gap-5 text-xs font-medium tracking-[0.12em] uppercase">
-        <a href="#studio" class="flex items-center gap-1.5 px-3 py-1.5 bg-carbon text-stoneLight hover:bg-charcoal transition">
-          <span class="w-1.5 h-1.5 rounded-full bg-iceLed animate-pulse"></span>
-          <span>CLAVE / STUDIO</span>
+        <a href="#sobre-astro" class="flex items-center gap-1.5 px-3 py-1.5 bg-carbon text-stoneLight hover:bg-charcoal transition">
+          <span class="w-1.5 h-1.5 rounded-full bg-iceLed"></span>
+          <span>CLAVE ASTRO</span>
         </a>
-        <a href="#cuenta-gmail" class="hidden sm:inline-block hover:opacity-60 transition">GMAIL ID</a>
+        <a href="#tienda" class="hidden sm:inline-block hover:opacity-60 transition">TIENDA</a>
         <button onclick="toggleCart()" class="relative flex items-center gap-1.5 hover:opacity-70 transition">
           <span>CARRITO</span>
           <span id="cart-count" class="font-mono bg-carbon text-iceLed text-[10px] px-1.5 py-0.5">0</span>
@@ -93,38 +143,38 @@
     </div>
   </header>
 
-  <!-- HERO EDITORIAL (Inspirado en GAZU + ASTRO) -->
+  <!-- 1. PÁGINA INICIAL (HERO EDITORIAL ESTILO GAZU + PERSONAJE ASTRO REALISTA) -->
   <section id="inicio" class="relative overflow-hidden pt-10 pb-20 md:py-24 border-b border-carbon/10">
     <div class="max-w-7xl mx-auto px-4 md:px-10 relative">
-      <!-- Textos editoriales superiores -->
+      <!-- Encabezados editoriales -->
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <div>
           <p class="text-[11px] font-mono tracking-[0.25em] uppercase text-charcoal">
-            COMPAÑERO IA DE BOLSILLO // SERIE 01
+            COMPAÑERO IA QUE SE MUEVE CONTIGO // SERIE 01
           </p>
           <div class="w-12 h-[1.5px] bg-carbon mt-2"></div>
         </div>
 
-        <!-- Selector de expresiones LED (como los 4 iconos de la imagen 1) -->
-        <div class="flex items-center gap-3 bg-stoneLight/80 p-2 border border-carbon/10">
-          <span class="text-[10px] font-mono uppercase tracking-wider px-2 text-charcoal">MODO LED:</span>
-          <button onclick="setMood('fierce')" title="Modo Determinado" class="mood-btn w-9 h-9 rounded-full bg-carbon flex items-center justify-center border-2 border-iceLed transition">
+        <!-- Selector de 4 modos LED (como en la imagen de referencia 1) -->
+        <div class="flex items-center gap-3 bg-stoneLight/85 p-2 border border-carbon/10">
+          <span class="text-[10px] font-mono uppercase tracking-wider px-2 text-charcoal">EXPRESIÓN LED:</span>
+          <button onclick="setMood('fierce')" title="Modo Determinado" class="w-9 h-9 rounded-full bg-carbon flex items-center justify-center border-2 border-iceLed transition">
             <svg class="w-5 h-5 text-iceLed led-glow" viewBox="0 0 24 24" fill="currentColor">
               <path d="M3 9l6 3v3H3V9zm18 0l-6 3v3h6V9z"/>
             </svg>
           </button>
-          <button onclick="setMood('happy')" title="Modo Feliz" class="mood-btn w-9 h-9 rounded-full bg-carbon flex items-center justify-center border-2 border-transparent hover:border-iceLed/50 transition">
+          <button onclick="setMood('happy')" title="Modo Feliz" class="w-9 h-9 rounded-full bg-carbon flex items-center justify-center border-2 border-transparent hover:border-iceLed/60 transition">
             <svg class="w-5 h-5 text-iceLed led-glow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M4 14c1.5-3 4.5-3 6 0M14 14c1.5-3 4.5-3 6 0"/>
             </svg>
           </button>
-          <button onclick="setMood('battery')" title="Estado de Batería" class="mood-btn w-9 h-9 rounded-full bg-carbon flex items-center justify-center border-2 border-transparent hover:border-iceLed/50 transition">
+          <button onclick="setMood('battery')" title="Batería" class="w-9 h-9 rounded-full bg-carbon flex items-center justify-center border-2 border-transparent hover:border-iceLed/60 transition">
             <svg class="w-5 h-5 text-iceLed led-glow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect x="4" y="7" width="14" height="10" rx="1"/>
               <path d="M20 10v4M7 10v4M11 10v4"/>
             </svg>
           </button>
-          <button onclick="setMood('spark')" title="Modo IA Activa" class="mood-btn w-9 h-9 rounded-full bg-carbon flex items-center justify-center border-2 border-transparent hover:border-iceLed/50 transition">
+          <button onclick="setMood('spark')" title="Destello IA" class="w-9 h-9 rounded-full bg-carbon flex items-center justify-center border-2 border-transparent hover:border-iceLed/60 transition">
             <svg class="w-5 h-5 text-iceLed led-glow" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2L12 2z"/>
             </svg>
@@ -132,84 +182,94 @@
         </div>
       </div>
 
-      <!-- Tipografía Gigante ASTRO + Mascota Central -->
-      <div class="relative flex flex-col items-center justify-center my-4 md:my-8">
+      <!-- Tipografía Gigante ASTRO + Modelo 3D SVG Sombreado -->
+      <div class="relative flex flex-col items-center justify-center my-4 md:my-6">
         <h1 aria-hidden="true" class="select-none text-[21vw] md:text-[17rem] font-extrabold tracking-[0.06em] leading-none text-carbon text-center">
           ASTRO
         </h1>
 
-        <!-- Personaje ASTRO SVG Interactivo superpuesto al estilo editorial -->
-        <div onclick="cycleMood()" class="astro-float cursor-pointer -mt-20 sm:-mt-32 md:-mt-44 z-10 w-64 sm:w-72 md:w-80 drop-shadow-2xl" title="Haz clic en Astro para cambiar su expresión LED">
+        <div onclick="cycleMood()" class="astro-float cursor-pointer -mt-20 sm:-mt-32 md:-mt-44 z-10 w-64 sm:w-72 md:w-80 drop-shadow-2xl" title="Haz clic en Astro para alternar sus ojos LED">
           <svg id="astro-character" viewBox="0 0 320 380" class="w-full h-auto">
-            <!-- Anilla metálica superior -->
-            <circle cx="160" cy="36" r="22" fill="none" stroke="#9CA3AF" stroke-width="7"/>
-            <circle cx="160" cy="36" r="22" fill="none" stroke="#E5E7EB" stroke-width="2" stroke-dasharray="30 40"/>
-            <rect x="148" y="48" width="24" height="22" rx="6" fill="#2E2E32"/>
+            <defs>
+              <radialGradient id="skullGrad" cx="40%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#F7F6F2"/>
+                <stop offset="65%" stop-color="#E4E2DC"/>
+                <stop offset="100%" stop-color="#C6C3BB"/>
+              </radialGradient>
+              <radialGradient id="bodyGrad" cx="35%" cy="25%" r="75%">
+                <stop offset="0%" stop-color="#45454B"/>
+                <stop offset="60%" stop-color="#2B2B30"/>
+                <stop offset="100%" stop-color="#18181B"/>
+              </radialGradient>
+              <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFFFFF"/>
+                <stop offset="45%" stop-color="#9CA3AF"/>
+                <stop offset="100%" stop-color="#4B5563"/>
+              </linearGradient>
+            </defs>
 
-            <!-- Líneas de expresión laterales -->
-            <line x1="255" y1="75" x2="270" y2="55" stroke="#F3F2EE" stroke-width="6" stroke-linecap="round"/>
-            <line x1="268" y1="88" x2="288" y2="78" stroke="#F3F2EE" stroke-width="6" stroke-linecap="round"/>
+            <!-- Anilla metálica realista -->
+            <circle cx="160" cy="36" r="22" fill="none" stroke="url(#ringGrad)" stroke-width="7"/>
+            <rect x="148" y="48" width="24" height="22" rx="6" fill="url(#bodyGrad)"/>
+
+            <!-- Líneas de expresión -->
+            <line x1="255" y1="75" x2="270" y2="55" stroke="#F7F6F2" stroke-width="6" stroke-linecap="round"/>
+            <line x1="268" y1="88" x2="288" y2="78" stroke="#F7F6F2" stroke-width="6" stroke-linecap="round"/>
 
             <!-- Cola Dino trasera -->
-            <path d="M88 265 Q30 255 24 210 Q55 215 95 235 Z" fill="#2E2E32"/>
-            <path d="M40 222 Q52 218 62 228" stroke="#E6E4E0" stroke-width="7" stroke-linecap="round" fill="none"/>
-            <path d="M55 236 Q68 232 78 242" stroke="#E6E4E0" stroke-width="7" stroke-linecap="round" fill="none"/>
+            <path d="M88 265 Q30 255 24 210 Q55 215 95 235 Z" fill="url(#bodyGrad)"/>
+            <path d="M40 222 Q52 218 62 228" stroke="#EAE8E3" stroke-width="7" stroke-linecap="round" fill="none"/>
+            <path d="M55 236 Q68 232 78 242" stroke="#EAE8E3" stroke-width="7" stroke-linecap="round" fill="none"/>
 
-            <!-- Cuerpo Carbón Mate -->
-            <ellipse cx="160" cy="272" rx="68" ry="62" fill="#2E2E32"/>
-            <!-- Barriga clara con segmentos -->
+            <!-- Cuerpo -->
+            <ellipse cx="160" cy="272" rx="68" ry="62" fill="url(#bodyGrad)"/>
             <path d="M124 235 Q160 228 196 235 L190 315 Q160 325 130 315 Z" fill="#DCDAD5"/>
             <path d="M132 256 Q160 262 188 256" stroke="#B8B5AE" stroke-width="2" fill="none"/>
             <path d="M131 278 Q160 284 189 278" stroke="#B8B5AE" stroke-width="2" fill="none"/>
             <path d="M133 300 Q160 306 187 300" stroke="#B8B5AE" stroke-width="2" fill="none"/>
 
             <!-- Brazos -->
-            <ellipse cx="102" cy="258" rx="18" ry="26" transform="rotate(20 102 258)" fill="#262629"/>
-            <ellipse cx="218" cy="258" rx="18" ry="26" transform="rotate(-20 218 258)" fill="#262629"/>
-            <!-- Garras -->
-            <circle cx="96" cy="280" r="4" fill="#E6E4E0"/>
-            <circle cx="104" cy="282" r="4" fill="#E6E4E0"/>
-            <circle cx="216" cy="282" r="4" fill="#E6E4E0"/>
-            <circle cx="224" cy="280" r="4" fill="#E6E4E0"/>
+            <ellipse cx="102" cy="258" rx="18" ry="26" transform="rotate(20 102 258)" fill="url(#bodyGrad)"/>
+            <ellipse cx="218" cy="258" rx="18" ry="26" transform="rotate(-20 218 258)" fill="url(#bodyGrad)"/>
+            <circle cx="96" cy="280" r="4" fill="#EAE8E3"/>
+            <circle cx="104" cy="282" r="4" fill="#EAE8E3"/>
+            <circle cx="216" cy="282" r="4" fill="#EAE8E3"/>
+            <circle cx="224" cy="280" r="4" fill="#EAE8E3"/>
 
             <!-- Patas -->
-            <ellipse cx="118" cy="326" rx="28" ry="18" fill="#262629"/>
-            <ellipse cx="202" cy="326" rx="28" ry="18" fill="#262629"/>
-            <!-- Dedos claros -->
-            <ellipse cx="104" cy="332" rx="11" ry="9" fill="#E6E4E0"/>
-            <ellipse cx="124" cy="334" rx="11" ry="9" fill="#E6E4E0"/>
-            <ellipse cx="196" cy="334" rx="11" ry="9" fill="#E6E4E0"/>
-            <ellipse cx="216" cy="332" rx="11" ry="9" fill="#E6E4E0"/>
+            <ellipse cx="118" cy="326" rx="28" ry="18" fill="url(#bodyGrad)"/>
+            <ellipse cx="202" cy="326" rx="28" ry="18" fill="url(#bodyGrad)"/>
+            <ellipse cx="104" cy="332" rx="11" ry="9" fill="#EAE8E3"/>
+            <ellipse cx="124" cy="334" rx="11" ry="9" fill="#EAE8E3"/>
+            <ellipse cx="196" cy="334" rx="11" ry="9" fill="#EAE8E3"/>
+            <ellipse cx="216" cy="332" rx="11" ry="9" fill="#EAE8E3"/>
 
-            <!-- Cabeza Base Oscura -->
-            <rect x="74" y="84" width="172" height="145" rx="70" fill="#262629"/>
+            <!-- Cabeza Base -->
+            <rect x="74" y="84" width="172" height="145" rx="70" fill="url(#bodyGrad)"/>
 
-            <!-- Visor Pantalla OLED Negra -->
-            <rect x="92" y="115" width="136" height="98" rx="46" fill="#0D0E11" stroke="#1F2024" stroke-width="4"/>
+            <!-- Visor OLED Negro -->
+            <rect x="92" y="115" width="136" height="98" rx="46" fill="#090A0D" stroke="#1F2024" stroke-width="4"/>
 
-            <!-- Contenedor Dinámico de Ojos LED -->
+            <!-- Contenedor Ojos LED -->
             <g id="astro-led-face" class="led-glow"></g>
 
-            <!-- Casco Cráneo Hueso Mate -->
-            <path d="M68 145 C68 82, 110 64, 160 64 C210 64, 252 82, 252 145 C252 162, 240 165, 234 152 C226 135, 212 135, 202 148 C192 158, 178 140, 160 140 C142 140, 128 158, 118 148 C108 135, 94 135, 86 152 C80 165, 68 162, 68 145 Z" fill="#EAE8E3"/>
-            <!-- Cuenca izquierda cráneo -->
-            <ellipse cx="116" cy="102" rx="15" ry="20" transform="rotate(-18 116 102)" fill="#262629"/>
-            <!-- Cuenca derecha cráneo -->
-            <ellipse cx="204" cy="102" rx="15" ry="20" transform="rotate(18 204 102)" fill="#262629"/>
-            <!-- Fosa lateral -->
-            <ellipse cx="81" cy="122" rx="6" ry="13" transform="rotate(-10 81 122)" fill="#262629"/>
+            <!-- Casco Cráneo Sombreado -->
+            <path d="M68 145 C68 82, 110 64, 160 64 C210 64, 252 82, 252 145 C252 162, 240 165, 234 152 C226 135, 212 135, 202 148 C192 158, 178 140, 160 140 C142 140, 128 158, 118 148 C108 135, 94 135, 86 152 C80 165, 68 162, 68 145 Z" fill="url(#skullGrad)"/>
+            <ellipse cx="116" cy="102" rx="15" ry="20" transform="rotate(-18 116 102)" fill="#222226"/>
+            <ellipse cx="204" cy="102" rx="15" ry="20" transform="rotate(18 204 102)" fill="#222226"/>
+            <ellipse cx="81" cy="122" rx="6" ry="13" transform="rotate(-10 81 122)" fill="#222226"/>
           </svg>
         </div>
       </div>
 
-      <!-- Barra inferior del Hero con CTAs -->
+      <!-- Barra inferior Hero -->
       <div class="flex flex-col md:flex-row justify-between items-center gap-6 mt-4">
         <div class="flex flex-wrap gap-4">
-          <a href="#tienda" class="bg-carbon text-stoneLight px-8 py-3.5 text-xs font-semibold tracking-[0.2em] uppercase hover:bg-charcoal transition">
-            COMPRAR ASTRO
+          <a href="#sobre-astro" class="bg-carbon text-stoneLight px-8 py-3.5 text-xs font-semibold tracking-[0.2em] uppercase hover:bg-charcoal transition">
+            EXPLORAR ASTRO
           </a>
-          <a href="#studio" class="border border-carbon text-carbon px-8 py-3.5 text-xs font-semibold tracking-[0.2em] uppercase hover:bg-carbon hover:text-stoneLight transition">
-            INGRESAR CLAVE IA
+          <a href="#tienda" class="border border-carbon text-carbon px-8 py-3.5 text-xs font-semibold tracking-[0.2em] uppercase hover:bg-carbon hover:text-stoneLight transition">
+            COMPRAR EDICIÓN 01
           </a>
         </div>
 
@@ -221,117 +281,103 @@
     </div>
   </section>
 
-  <!-- FRANJA OSCURA DE 3 COLUMNAS: PARTES DE ASTRO (Ref. Imagen 2) -->
-  <section id="partes" class="bg-carbon text-stoneLight py-14 border-b border-white/10">
+  <!-- 2. APARTADO "SOBRE ASTRO" CON BARRA DE BÚSQUEDA / CLAVE DE ACCESO + ANATOMÍA -->
+  <section id="sobre-astro" class="bg-carbon text-stoneLight py-16 border-b border-white/10">
     <div class="max-w-7xl mx-auto px-4 md:px-10">
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
-        <div>
-          <span class="text-[10px] font-mono tracking-[0.25em] text-iceLed uppercase">ARQUITECTURA DE HARDWARE</span>
-          <h2 class="text-2xl md:text-3xl font-bold tracking-tight uppercase mt-1">ANATOMÍA DE ASTRO</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pb-14 border-b border-white/10">
+        <div class="lg:col-span-6">
+          <span class="text-[10px] font-mono tracking-[0.25em] text-iceLed uppercase">IDENTIDAD &amp; CONTROL</span>
+          <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight uppercase mt-1">SOBRE ASTRO</h2>
+          <p class="text-xs md:text-sm text-stoneLight/75 mt-3 leading-relaxed">
+            Astro fusiona el diseño de coleccionismo táctil con inteligencia artificial de bolsillo. Su casco cráneo magnético protege una matriz OLED pixelada capaz de expresar emociones, alertas de Gmail y respuestas conversacionales en tiempo real.
+          </p>
         </div>
-        <p class="text-xs text-stoneLight/70 max-w-md">
-          Diseñado como un objeto coleccionable táctil con núcleo neuronal integrado, pantalla OLED de alto contraste y carcasa magnética intercambiable.
-        </p>
+
+        <!-- Apartado tipo buscador para poner clave de acceso -->
+        <div class="lg:col-span-6 bg-charcoal/70 p-6 md:p-8 border border-white/15">
+          <div class="flex justify-between items-center mb-2">
+            <label for="about-key-search" class="text-[11px] font-mono tracking-[0.2em] uppercase text-iceLed">
+              BUSCAR / INGRESAR CLAVE DE ACCESO ASTRO
+            </label>
+            <span class="text-[10px] font-mono text-stoneLight/50">CLAVE: ASTRO</span>
+          </div>
+          <form onsubmit="unlockStudioFromAbout(event)" class="flex items-center bg-carbon border border-white/25 focus-within:border-iceLed transition mt-2">
+            <span class="pl-4 text-stoneLight/50">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+              </svg>
+            </span>
+            <input
+              id="about-key-search"
+              type="text"
+              placeholder="INGRESA CLAVE PARA ABRIR EDITOR E IA (EJ. ASTRO)..."
+              class="w-full bg-transparent px-3.5 py-3.5 text-xs font-mono uppercase tracking-widest text-iceLed placeholder:text-white/35 focus:outline-none"
+              required
+            />
+            <button type="submit" class="bg-iceLed text-carbon font-bold text-xs tracking-[0.15em] uppercase px-5 py-3.5 hover:bg-iceGlow transition shrink-0">
+              ACCEDER
+            </button>
+          </form>
+          <p id="about-key-msg" class="text-[11px] font-mono text-stoneLight/60 mt-2.5">
+            Introduce <strong class="text-iceLed">ASTRO</strong> (o tu clave generada en Gmail) para habilitar la consola IA y el diseñador LED abajo.
+          </p>
+        </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- Parte 1 -->
-        <div class="flex gap-5 items-start bg-charcoal/50 p-6 border border-white/10 hover:border-iceLed/50 transition">
-          <div class="w-16 h-16 shrink-0 bg-stoneBg text-carbon flex items-center justify-center font-mono font-bold text-lg">
-            01
-          </div>
+      <!-- 3 Partes de Astro (Ref. Imagen 2) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-12">
+        <div class="flex gap-5 items-start bg-charcoal/40 p-6 border border-white/10">
+          <div class="w-14 h-14 shrink-0 bg-stoneBg text-carbon flex items-center justify-center font-mono font-bold text-base">01</div>
           <div>
             <h3 class="text-sm font-bold tracking-[0.15em] uppercase">CASCO CRÁNEO &amp; ANILLA</h3>
             <p class="text-xs text-stoneLight/75 mt-2 leading-relaxed">
-              Polímero táctil acabado hueso mate con anilla de acero inoxidable mecanizado para llevarlo en mochila o llaves.
+              Polímero táctil hueso mate con anilla metálica reforzada para acompañarte en todo momento.
             </p>
-            <a href="#tienda" class="inline-block mt-3 text-[11px] font-mono text-iceLed uppercase tracking-wider hover:underline">
-              VER CARCASAS →
-            </a>
           </div>
         </div>
 
-        <!-- Parte 2 -->
-        <div class="flex gap-5 items-start bg-charcoal/50 p-6 border border-white/10 hover:border-iceLed/50 transition">
-          <div class="w-16 h-16 shrink-0 bg-stoneBg text-carbon flex items-center justify-center font-mono font-bold text-lg">
-            02
-          </div>
+        <div class="flex gap-5 items-start bg-charcoal/40 p-6 border border-white/10">
+          <div class="w-14 h-14 shrink-0 bg-stoneBg text-carbon flex items-center justify-center font-mono font-bold text-base">02</div>
           <div>
-            <h3 class="text-sm font-bold tracking-[0.15em] uppercase">MATRIZ LED PIXELADA</h3>
+            <h3 class="text-sm font-bold tracking-[0.15em] uppercase">VISOR MATRIZ LED</h3>
             <p class="text-xs text-stoneLight/75 mt-2 leading-relaxed">
-              Visor curvo OLED con píxeles azul hielo que reaccionan a tu voz, notificaciones, nivel de carga y emociones.
+              Pantalla OLED curva con píxeles azul hielo personalizables desde el editor web.
             </p>
-            <a href="#studio" class="inline-block mt-3 text-[11px] font-mono text-iceLed uppercase tracking-wider hover:underline">
-              ABRIR EDITOR PIXEL →
-            </a>
           </div>
         </div>
 
-        <!-- Parte 3 -->
-        <div class="flex gap-5 items-start bg-charcoal/50 p-6 border border-white/10 hover:border-iceLed/50 transition">
-          <div class="w-16 h-16 shrink-0 bg-stoneBg text-carbon flex items-center justify-center font-mono font-bold text-lg">
-            03
-          </div>
+        <div class="flex gap-5 items-start bg-charcoal/40 p-6 border border-white/10">
+          <div class="w-14 h-14 shrink-0 bg-stoneBg text-carbon flex items-center justify-center font-mono font-bold text-base">03</div>
           <div>
-            <h3 class="text-sm font-bold tracking-[0.15em] uppercase">NÚCLEO IA &amp; BATERÍA</h3>
+            <h3 class="text-sm font-bold tracking-[0.15em] uppercase">NÚCLEO IA &amp; GMAIL SYNC</h3>
             <p class="text-xs text-stoneLight/75 mt-2 leading-relaxed">
-              Procesador neuronal de bajo consumo con 72 horas de autonomía, sincronización Gmail y memoria conversacional.
+              Asistente conversacional de bajo consumo con 72 horas de autonomía y alertas inteligentes.
             </p>
-            <a href="#cuenta-gmail" class="inline-block mt-3 text-[11px] font-mono text-iceLed uppercase tracking-wider hover:underline">
-              VINCULAR CUENTA →
-            </a>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PORTAL DE CLAVE PARA ASTRO (ACCEDER A IA, EDITOR DE OJOS, ETC.) -->
+  <!-- 3. ASTRO STUDIO (EDITOR LED + CONSOLA IA) -->
   <section id="studio" class="py-20 bg-stoneLight border-b border-carbon/10">
     <div class="max-w-7xl mx-auto px-4 md:px-10">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
         <div>
-          <span class="text-[11px] font-mono tracking-[0.25em] uppercase text-charcoal">ACCESO RESTRINGIDO // HARDWARE KEY</span>
-          <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight uppercase mt-1">ASTRO STUDIO &amp; CLAVE IA</h2>
+          <span class="text-[11px] font-mono tracking-[0.25em] uppercase text-charcoal">HARDWARE &amp; SOFTWARE STUDIO</span>
+          <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight uppercase mt-1">EDITOR LED &amp; CONSOLA IA</h2>
         </div>
-        <div class="text-xs font-mono bg-stoneBg px-3 py-1.5 border border-carbon/15">
-          CLAVE DEMO: <strong class="select-all">ASTRO-2026</strong>
-        </div>
+        <span id="studio-status-badge" class="text-xs font-mono bg-carbon text-iceLed px-3 py-1.5 uppercase">
+          ● SESIÓN ACTIVA CON CLAVE ASTRO
+        </span>
       </div>
 
-      <!-- Pantalla de Bloqueo por Clave -->
-      <div id="key-gate" class="bg-carbon text-stoneLight p-8 md:p-12 max-w-2xl mx-auto border border-carbon shadow-xl">
-        <div class="flex items-center gap-3 mb-4">
-          <span class="w-2.5 h-2.5 rounded-full bg-iceLed"></span>
-          <span class="font-mono text-xs tracking-[0.2em] uppercase text-iceLed">VERIFICACIÓN DE DISPOSITIVO</span>
-        </div>
-        <h3 class="text-xl font-bold uppercase tracking-wide">INGRESA TU CLAVE DE SERIE ASTRO</h3>
-        <p class="text-xs text-stoneLight/70 mt-2 leading-relaxed">
-          Desbloquea el editor de matriz LED en tiempo real, el entrenamiento de personalidad IA y el panel de sincronización. Si aún no tienes clave, puedes generar una al crear tu cuenta Gmail abajo.
-        </p>
-
-        <form onsubmit="unlockStudio(event)" class="mt-6 flex flex-col sm:flex-row gap-3">
-          <input
-            id="astro-key-input"
-            type="text"
-            placeholder="EJ. ASTRO-2026"
-            class="flex-1 bg-charcoal border border-white/20 px-4 py-3 text-sm font-mono uppercase tracking-widest text-iceLed placeholder:text-white/30 focus:outline-none focus:border-iceLed"
-            required
-          />
-          <button type="submit" class="bg-iceLed text-carbon font-bold text-xs tracking-[0.2em] uppercase px-6 py-3 hover:bg-iceGlow transition">
-            DESBLOQUEAR
-          </button>
-        </form>
-        <p id="key-error" class="text-xs font-mono text-red-400 mt-3 hidden">Clave inválida. Usa ASTRO-2026 o genera una en la sección Gmail.</p>
-      </div>
-
-      <!-- Panel Desbloqueado: Editor Pixel LED + Consola IA -->
-      <div id="studio-workspace" class="hidden grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
-        <!-- Módulo 1: Editor de Matriz LED -->
+      <div id="studio-workspace" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Editor Matriz Pixel -->
         <div class="bg-carbon text-stoneLight p-6 md:p-8 border border-carbon">
           <div class="flex justify-between items-center mb-4">
             <div>
-              <span class="text-[10px] font-mono text-iceLed tracking-[0.2em] uppercase">EDITOR DE VISOR OLED</span>
+              <span class="text-[10px] font-mono text-iceLed tracking-[0.2em] uppercase">VISOR OLED 16×8</span>
               <h3 class="text-lg font-bold uppercase">DISEÑADOR DE OJOS PIXEL</h3>
             </div>
             <button onclick="clearPixelGrid()" class="text-[11px] font-mono border border-white/20 px-3 py-1 hover:border-iceLed hover:text-iceLed transition">
@@ -339,29 +385,27 @@
             </button>
           </div>
           <p class="text-xs text-stoneLight/70 mb-5">
-            Haz clic en los píxeles para dibujar una expresión personalizada. Se sincroniza al instante con el modelo 3D/SVG del inicio.
+            Dibuja píxel por píxel la expresión de Astro y envíala directamente al visor de la portada.
           </p>
 
-          <!-- Cuadrícula 16x8 -->
-          <div id="pixel-grid" class="grid grid-cols-16 gap-1 bg-black p-3 border border-white/10 mx-auto max-w-md" style="grid-template-columns: repeat(16, minmax(0, 1fr));">
-          </div>
+          <div id="pixel-grid" class="grid gap-1 bg-black p-3 border border-white/10 mx-auto max-w-md" style="grid-template-columns: repeat(16, minmax(0, 1fr));"></div>
 
           <div class="flex flex-wrap gap-2 mt-5">
-            <button onclick="applyPresetPixel('angry')" class="text-[10px] font-mono uppercase bg-charcoal px-3 py-1.5 hover:text-iceLed">Preset: Fiero</button>
-            <button onclick="applyPresetPixel('heart')" class="text-[10px] font-mono uppercase bg-charcoal px-3 py-1.5 hover:text-iceLed">Preset: Amor</button>
-            <button onclick="applyPresetPixel('wink')" class="text-[10px] font-mono uppercase bg-charcoal px-3 py-1.5 hover:text-iceLed">Preset: Guiño</button>
+            <button onclick="applyPresetPixel('angry')" class="text-[10px] font-mono uppercase bg-charcoal px-3 py-1.5 hover:text-iceLed">Fiero</button>
+            <button onclick="applyPresetPixel('heart')" class="text-[10px] font-mono uppercase bg-charcoal px-3 py-1.5 hover:text-iceLed">Amor</button>
+            <button onclick="applyPresetPixel('wink')" class="text-[10px] font-mono uppercase bg-charcoal px-3 py-1.5 hover:text-iceLed">Guiño</button>
             <button onclick="syncPixelsToHero()" class="ml-auto text-[10px] font-mono uppercase bg-iceLed text-carbon font-bold px-4 py-1.5 hover:bg-iceGlow">
               ENVIAR A ASTRO ↑
             </button>
           </div>
         </div>
 
-        <!-- Módulo 2: Consola IA de Astro -->
+        <!-- Consola IA -->
         <div class="bg-stoneBg border border-carbon/20 p-6 md:p-8 flex flex-col justify-between">
           <div>
             <div class="flex justify-between items-center mb-4">
               <div>
-                <span class="text-[10px] font-mono text-charcoal tracking-[0.2em] uppercase">MOTOR NEURONAL ACTIVO</span>
+                <span class="text-[10px] font-mono text-charcoal tracking-[0.2em] uppercase">NÚCLEO NEURONAL</span>
                 <h3 class="text-lg font-bold uppercase">CONSOLA IA DE ASTRO</h3>
               </div>
               <span class="text-[10px] font-mono bg-carbon text-iceLed px-2.5 py-1">ONLINE</span>
@@ -369,7 +413,7 @@
 
             <div id="ai-chat-box" class="bg-stoneLight border border-carbon/15 h-60 p-4 overflow-y-auto space-y-3 text-xs font-mono">
               <div class="text-charcoal">
-                <strong class="text-carbon">[ASTRO]:</strong> Núcleo sincronizado. Mi batería está al 94% y mi casco cráneo listo. ¿Qué quieres programar hoy?
+                <strong class="text-carbon">[ASTRO]:</strong> Acceso verificado. Estoy listo para personalizar mis expresiones LED o vincular tu cuenta Gmail.
               </div>
             </div>
           </div>
@@ -391,13 +435,101 @@
     </div>
   </section>
 
-  <!-- APARTADO PARA COMPRAR A ASTRO (Catálogo estilo Best of Gazu) -->
-  <section id="tienda" class="py-20 bg-stoneBg border-b border-carbon/10">
+  <!-- 4. ANUNCIOS & GENERAR CUENTA GMAIL ASTRO -->
+  <section class="py-20 bg-stoneBg border-b border-carbon/10">
+    <div class="max-w-7xl mx-auto px-4 md:px-10 grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <!-- Anuncios -->
+      <div id="anuncios" class="lg:col-span-5">
+        <span class="text-[11px] font-mono tracking-[0.25em] uppercase text-charcoal">BOLETÍN OFICIAL</span>
+        <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight uppercase mt-1 mb-6">ANUNCIOS ASTRO</h2>
+
+        <div class="space-y-4">
+          <article class="bg-stoneLight p-5 border-l-4 border-carbon">
+            <div class="flex justify-between items-center text-[10px] font-mono text-charcoal mb-1">
+              <span>FIRMWARE // v2.4</span>
+              <span>2026</span>
+            </div>
+            <h3 class="text-sm font-bold uppercase">NUEVO MODO CENTINELA Y RESPUESTA POR VOZ</h3>
+            <p class="text-xs text-charcoal/80 mt-1.5 leading-relaxed">
+              Astro detecta notificaciones prioritarias de Gmail y muestra alertas pixeladas en su visor OLED.
+            </p>
+          </article>
+
+          <article class="bg-stoneLight p-5 border-l-4 border-iceLed">
+            <div class="flex justify-between items-center text-[10px] font-mono text-charcoal mb-1">
+              <span>DROP LIMITADO</span>
+              <span>EDICIÓN 02</span>
+            </div>
+            <h3 class="text-sm font-bold uppercase">CARCASA CRÁNEO TRANSLÚCIDO</h3>
+            <p class="text-xs text-charcoal/80 mt-1.5 leading-relaxed">
+              500 unidades numeradas con acabado ahumado que deja ver el circuito interno.
+            </p>
+          </article>
+        </div>
+      </div>
+
+      <!-- Generar Gmail -->
+      <div id="cuenta-gmail" class="lg:col-span-7 bg-carbon text-stoneLight p-8 md:p-10">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[11px] font-mono tracking-[0.25em] text-iceLed uppercase">ECOSISTEMA &amp; IDENTIDAD</span>
+          <span class="text-[10px] font-mono border border-white/20 px-2 py-0.5">GMAIL SYNC</span>
+        </div>
+        <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight uppercase">GENERAR CUENTA GMAIL ASTRO</h2>
+        <p class="text-xs text-stoneLight/75 mt-2 leading-relaxed">
+          Crea tu cuenta <span class="text-iceLed font-mono">@gmail.com</span> vinculada a Astro para sincronizar notificaciones y generar una clave de acceso personal.
+        </p>
+
+        <form onsubmit="generateAstroGmail(event)" class="mt-6 space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[10px] font-mono uppercase tracking-wider text-stoneLight/70 mb-1.5">TU NOMBRE</label>
+              <input id="owner-name" type="text" placeholder="Ej. Alex" required class="w-full bg-charcoal border border-white/15 px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-iceLed" />
+            </div>
+            <div>
+              <label class="block text-[10px] font-mono uppercase tracking-wider text-stoneLight/70 mb-1.5">APODO DE TU ASTRO</label>
+              <input id="bot-alias" type="text" placeholder="Ej. Rex01" required class="w-full bg-charcoal border border-white/15 px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-iceLed" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[10px] font-mono uppercase tracking-wider text-stoneLight/70 mb-1.5">DIRECCIÓN GMAIL DESEADA</label>
+            <div class="flex items-center bg-charcoal border border-white/15">
+              <input id="gmail-prefix" type="text" placeholder="astro.alex.rex" required class="flex-1 bg-transparent px-3.5 py-2.5 text-xs font-mono text-iceLed focus:outline-none" />
+              <span class="px-3.5 text-xs font-mono text-stoneLight/60">@gmail.com</span>
+            </div>
+          </div>
+
+          <button type="submit" class="w-full bg-iceLed text-carbon font-bold text-xs tracking-[0.2em] uppercase py-3.5 hover:bg-iceGlow transition">
+            GENERAR CUENTA GMAIL + CLAVE ASTRO
+          </button>
+        </form>
+
+        <div id="gmail-result" class="hidden mt-6 bg-charcoal border border-iceLed/50 p-5 text-xs font-mono space-y-2">
+          <p class="text-[10px] text-iceLed uppercase tracking-widest">✓ CUENTA GMAIL GENERADA</p>
+          <div class="flex justify-between border-b border-white/10 pb-1.5">
+            <span class="text-stoneLight/60">CORREO:</span>
+            <span id="res-email" class="text-white font-bold select-all"></span>
+          </div>
+          <div class="flex justify-between border-b border-white/10 pb-1.5">
+            <span class="text-stoneLight/60">CONTRASEÑA:</span>
+            <span id="res-pass" class="text-stoneLight select-all"></span>
+          </div>
+          <div class="flex justify-between items-center pt-1">
+            <span class="text-stoneLight/60">CLAVE ASTRO:</span>
+            <span id="res-key" class="text-iceLed font-bold select-all"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. TIENDA OFICIAL (CASI HASTA ABAJO COMO PEDISTE) -->
+  <section id="tienda" class="py-20 bg-stoneLight">
     <div class="max-w-7xl mx-auto px-4 md:px-10">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-12 gap-4">
         <div>
           <span class="text-[11px] font-mono tracking-[0.25em] uppercase text-charcoal">EDICIONES LIMITADAS &amp; ACCESORIOS</span>
-          <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight uppercase mt-1">COLECCIÓN ASTRO</h2>
+          <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight uppercase mt-1">TIENDA OFICIAL ASTRO</h2>
         </div>
         <div class="flex gap-2 text-xs font-mono">
           <button onclick="filterProducts('all')" class="px-3 py-1.5 bg-carbon text-stoneLight">TODOS</button>
@@ -408,11 +540,10 @@
 
       <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Producto 1 -->
-        <div data-cat="bot" class="product-card group bg-stoneLight border border-carbon/10 flex flex-col justify-between">
+        <div data-cat="bot" class="product-card group bg-stoneBg border border-carbon/10 flex flex-col justify-between">
           <div>
             <div class="aspect-square bg-[#DFDDD8] relative flex items-center justify-center p-6 overflow-hidden">
               <span class="absolute top-3 left-3 bg-carbon text-iceLed text-[10px] font-mono px-2 py-0.5 uppercase">BESTSELLER</span>
-              <!-- Mini Ilustración ASTRO -->
               <svg viewBox="0 0 160 180" class="w-36 h-36 group-hover:scale-105 transition duration-300">
                 <circle cx="80" cy="20" r="10" fill="none" stroke="#888" stroke-width="4"/>
                 <ellipse cx="80" cy="130" rx="34" ry="30" fill="#2E2E32"/>
@@ -425,7 +556,7 @@
             <div class="p-5">
               <p class="text-[10px] font-mono text-charcoal uppercase">EDICIÓN ORIGINAL</p>
               <h3 class="text-sm font-bold uppercase tracking-wide mt-1">ASTRO BONE SKULL v1</h3>
-              <p class="text-xs text-charcoal/80 mt-1.5">Incluye anilla metálica, cable USB-C magnético y clave IA vitalicia.</p>
+              <p class="text-xs text-charcoal/80 mt-1.5">Incluye anilla metálica, cable USB-C y clave IA vitalicia.</p>
             </div>
           </div>
           <div class="px-5 pb-5 flex items-center justify-between">
@@ -437,7 +568,7 @@
         </div>
 
         <!-- Producto 2 -->
-        <div data-cat="bot" class="product-card group bg-stoneLight border border-carbon/10 flex flex-col justify-between">
+        <div data-cat="bot" class="product-card group bg-stoneBg border border-carbon/10 flex flex-col justify-between">
           <div>
             <div class="aspect-square bg-[#242427] relative flex items-center justify-center p-6 overflow-hidden">
               <span class="absolute top-3 left-3 bg-iceLed text-carbon text-[10px] font-mono font-bold px-2 py-0.5 uppercase">EDICIÓN NOCHE</span>
@@ -465,7 +596,7 @@
         </div>
 
         <!-- Producto 3 -->
-        <div data-cat="shell" class="product-card group bg-stoneLight border border-carbon/10 flex flex-col justify-between">
+        <div data-cat="shell" class="product-card group bg-stoneBg border border-carbon/10 flex flex-col justify-between">
           <div>
             <div class="aspect-square bg-[#DFDDD8] relative flex items-center justify-center p-6 overflow-hidden">
               <span class="absolute top-3 left-3 bg-charcoal text-stoneLight text-[10px] font-mono px-2 py-0.5 uppercase">ACCESORIO</span>
@@ -477,7 +608,7 @@
             <div class="p-5">
               <p class="text-[10px] font-mono text-charcoal uppercase">CARCASA MAGNÉTICA</p>
               <h3 class="text-sm font-bold uppercase tracking-wide mt-1">CASCO REX CRÁNEO BLANCO</h3>
-              <p class="text-xs text-charcoal/80 mt-1.5">Carcasa intercambiable de repuesto resistente a impactos y rayones.</p>
+              <p class="text-xs text-charcoal/80 mt-1.5">Carcasa intercambiable resistente a impactos y rayones.</p>
             </div>
           </div>
           <div class="px-5 pb-5 flex items-center justify-between">
@@ -489,7 +620,7 @@
         </div>
 
         <!-- Producto 4 -->
-        <div data-cat="shell" class="product-card group bg-stoneLight border border-carbon/10 flex flex-col justify-between">
+        <div data-cat="shell" class="product-card group bg-stoneBg border border-carbon/10 flex flex-col justify-between">
           <div>
             <div class="aspect-square bg-[#DFDDD8] relative flex items-center justify-center p-6 overflow-hidden">
               <span class="absolute top-3 left-3 bg-charcoal text-stoneLight text-[10px] font-mono px-2 py-0.5 uppercase">PACK ESTUDIO</span>
@@ -500,7 +631,7 @@
             <div class="p-5">
               <p class="text-[10px] font-mono text-charcoal uppercase">BASE &amp; SOFTWARE</p>
               <h3 class="text-sm font-bold uppercase tracking-wide mt-1">BASE DE CARGA + CLAVE API</h3>
-              <p class="text-xs text-charcoal/80 mt-1.5">Base de escritorio minimalista + acceso ilimitado a modelos IA de Astro.</p>
+              <p class="text-xs text-charcoal/80 mt-1.5">Base de escritorio minimalista + acceso ilimitado a modelos IA.</p>
             </div>
           </div>
           <div class="px-5 pb-5 flex items-center justify-between">
@@ -511,139 +642,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Barra de garantías estilo GAZU -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-14 pt-10 border-t border-carbon/15 text-xs">
-        <div>
-          <p class="font-bold uppercase tracking-wider">ENVÍO RÁPIDO</p>
-          <p class="text-charcoal/75 mt-1">Entrega asegurada en 48-72h</p>
-        </div>
-        <div>
-          <p class="font-bold uppercase tracking-wider">GARANTÍA 2 AÑOS</p>
-          <p class="text-charcoal/75 mt-1">Cobertura total en matriz OLED</p>
-        </div>
-        <div>
-          <p class="font-bold uppercase tracking-wider">ACTUALIZACIONES OTA</p>
-          <p class="text-charcoal/75 mt-1">Nuevos gestos cada mes</p>
-        </div>
-        <div>
-          <p class="font-bold uppercase tracking-wider">PAGO ENCRIPTADO</p>
-          <p class="text-charcoal/75 mt-1">Protección 100% verificada</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ANUNCIOS & GENERAR CUENTA GMAIL ASTRO -->
-  <section class="py-20 bg-stoneLight">
-    <div class="max-w-7xl mx-auto px-4 md:px-10 grid grid-cols-1 lg:grid-cols-12 gap-12">
-
-      <!-- Columna Izquierda: ANUNCIOS (5 cols) -->
-      <div id="anuncios" class="lg:col-span-5 flex flex-col justify-between">
-        <div>
-          <span class="text-[11px] font-mono tracking-[0.25em] uppercase text-charcoal">BOLETÍN OFICIAL</span>
-          <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight uppercase mt-1 mb-6">ANUNCIOS ASTRO</h2>
-
-          <div class="space-y-4">
-            <article class="bg-stoneBg p-5 border-l-4 border-carbon">
-              <div class="flex justify-between items-center text-[10px] font-mono text-charcoal mb-1">
-                <span>FIRMWARE // v2.4</span>
-                <span>NOV 2026</span>
-              </div>
-              <h3 class="text-sm font-bold uppercase">NUEVO MODO CENTINELA Y RESPUESTA POR VOZ</h3>
-              <p class="text-xs text-charcoal/80 mt-1.5 leading-relaxed">
-                Astro ahora detecta notificaciones prioritarias de tu correo vinculado y muestra alertas pixeladas personalizadas en su visor.
-              </p>
-            </article>
-
-            <article class="bg-stoneBg p-5 border-l-4 border-iceLed">
-              <div class="flex justify-between items-center text-[10px] font-mono text-charcoal mb-1">
-                <span>DROP LIMITADO</span>
-                <span>PRÓXIMAMENTE</span>
-              </div>
-              <h3 class="text-sm font-bold uppercase">CARCASA CRÁNEO TRANSLÚCIDO EDICIÓN 02</h3>
-              <p class="text-xs text-charcoal/80 mt-1.5 leading-relaxed">
-                Solo 500 unidades numeradas con acabado ahumado que deja ver la placa interna de Astro.
-              </p>
-            </article>
-
-            <article class="bg-stoneBg p-5 border-l-4 border-charcoal/40">
-              <div class="flex justify-between items-center text-[10px] font-mono text-charcoal mb-1">
-                <span>COMUNIDAD</span>
-                <span>STUDIO</span>
-              </div>
-              <h3 class="text-sm font-bold uppercase">EXPORTA TUS OJOS PIXEL A GITHUB</h3>
-              <p class="text-xs text-charcoal/80 mt-1.5 leading-relaxed">
-                Comparte tus matrices LED con otros dueños de Astro usando el repositorio abierto de expresiones.
-              </p>
-            </article>
-          </div>
-        </div>
-      </div>
-
-      <!-- Columna Derecha: GENERAR CUENTA GMAIL ASTRO (7 cols) -->
-      <div id="cuenta-gmail" class="lg:col-span-7 bg-carbon text-stoneLight p-8 md:p-10 flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-[11px] font-mono tracking-[0.25em] text-iceLed uppercase">ECOSISTEMA &amp; IDENTIDAD</span>
-            <span class="text-[10px] font-mono border border-white/20 px-2 py-0.5">GMAIL SYNC</span>
-          </div>
-          <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight uppercase">GENERAR CUENTA GMAIL ASTRO</h2>
-          <p class="text-xs text-stoneLight/75 mt-2 leading-relaxed">
-            Crea tu dirección <span class="text-iceLed font-mono">@gmail.com</span> dedicada para sincronizar calendarios, recibir resúmenes de IA en tu Astro y obtener una <strong>Clave de Acceso Studio</strong> al instante.
-          </p>
-
-          <form onsubmit="generateAstroGmail(event)" class="mt-6 space-y-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-[10px] font-mono uppercase tracking-wider text-stoneLight/70 mb-1.5">NOMBRE DEL PROPIETARIO</label>
-                <input id="owner-name" type="text" placeholder="Ej. Alex" required class="w-full bg-charcoal border border-white/15 px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-iceLed" />
-              </div>
-              <div>
-                <label class="block text-[10px] font-mono uppercase tracking-wider text-stoneLight/70 mb-1.5">APODO DE TU ASTRO</label>
-                <input id="bot-alias" type="text" placeholder="Ej. Rex01" required class="w-full bg-charcoal border border-white/15 px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-iceLed" />
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-[10px] font-mono uppercase tracking-wider text-stoneLight/70 mb-1.5">PREFIJO DE CORREO DESEADO</label>
-              <div class="flex items-center bg-charcoal border border-white/15">
-                <input id="gmail-prefix" type="text" placeholder="astro.alex.rex" required class="flex-1 bg-transparent px-3.5 py-2.5 text-xs font-mono text-iceLed focus:outline-none" />
-                <span class="px-3.5 text-xs font-mono text-stoneLight/60">@gmail.com</span>
-              </div>
-            </div>
-
-            <button type="submit" class="w-full bg-iceLed text-carbon font-bold text-xs tracking-[0.2em] uppercase py-3.5 hover:bg-iceGlow transition">
-              GENERAR CUENTA GMAIL + CLAVE ASTRO
-            </button>
-          </form>
-        </div>
-
-        <!-- Resultado generado -->
-        <div id="gmail-result" class="hidden mt-6 bg-charcoal border border-iceLed/50 p-5">
-          <p class="text-[10px] font-mono text-iceLed uppercase tracking-widest">✓ IDENTIDAD CREADA CON ÉXITO</p>
-          <div class="mt-3 space-y-2 text-xs font-mono">
-            <div class="flex justify-between border-b border-white/10 pb-1.5">
-              <span class="text-stoneLight/60">CUENTA GMAIL:</span>
-              <span id="res-email" class="text-white font-bold select-all"></span>
-            </div>
-            <div class="flex justify-between border-b border-white/10 pb-1.5">
-              <span class="text-stoneLight/60">CONTRASEÑA TEMP:</span>
-              <span id="res-pass" class="text-stoneLight select-all"></span>
-            </div>
-            <div class="flex justify-between items-center pt-1">
-              <span class="text-stoneLight/60">CLAVE STUDIO IA:</span>
-              <div class="flex items-center gap-2">
-                <span id="res-key" class="text-iceLed font-bold select-all"></span>
-                <button onclick="useGeneratedKey()" class="bg-iceLed text-carbon text-[10px] font-bold px-2.5 py-1 uppercase hover:bg-iceGlow">
-                  USAR AHORA
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
   </section>
 
@@ -656,8 +654,8 @@
       </div>
       <div class="flex gap-6 font-mono text-[11px]">
         <a href="#inicio" class="hover:text-iceLed">INICIO</a>
-        <a href="#partes" class="hover:text-iceLed">ANATOMÍA</a>
-        <a href="#studio" class="hover:text-iceLed">CLAVE IA</a>
+        <a href="#sobre-astro" class="hover:text-iceLed">SOBRE ASTRO</a>
+        <a href="#studio" class="hover:text-iceLed">EDITOR IA</a>
         <a href="#tienda" class="hover:text-iceLed">TIENDA</a>
       </div>
     </div>
@@ -689,9 +687,44 @@
     </div>
   </div>
 
-  <!-- SCRIPTS INTERACTIVOS -->
+  <!-- SCRIPTS -->
   <script>
-    // 1. Expresiones LED de ASTRO en el Hero
+    const VALID_KEYS = ['ASTRO', 'ASTRO-2026'];
+
+    // Desbloqueo desde la overlay negra inicial (75% opacidad)
+    function unlockSite(e) {
+      e.preventDefault();
+      const val = document.getElementById('overlay-key-input').value.trim().toUpperCase();
+      const err = document.getElementById('overlay-error');
+
+      if (VALID_KEYS.includes(val) || val.startsWith('ASTRO-')) {
+        err.classList.add('hidden');
+        const overlay = document.getElementById('access-overlay');
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+        document.getElementById('main-body').classList.remove('overflow-hidden');
+        setTimeout(() => overlay.remove(), 500);
+        initPixelGrid();
+      } else {
+        err.classList.remove('hidden');
+      }
+    }
+
+    // Desbloqueo desde el buscador en "Sobre Astro"
+    function unlockStudioFromAbout(e) {
+      e.preventDefault();
+      const val = document.getElementById('about-key-search').value.trim().toUpperCase();
+      const msg = document.getElementById('about-key-msg');
+
+      if (VALID_KEYS.includes(val) || val.startsWith('ASTRO-')) {
+        msg.innerHTML = `<span class="text-iceLed">✓ Clave "${val}" verificada. Desplazando al Estudio IA...</span>`;
+        initPixelGrid();
+        document.getElementById('studio').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        msg.innerHTML = `<span class="text-red-400">Clave no reconocida. Usa <strong>ASTRO</strong> para acceder.</span>`;
+      }
+    }
+
+    // Expresiones LED en el Hero
     const faceEl = document.getElementById('astro-led-face');
     const moods = ['fierce', 'happy', 'battery', 'spark'];
     let currentMoodIndex = 0;
@@ -702,8 +735,8 @@
         faceEl.innerHTML = `
           <polygon points="108,150 146,166 146,182 114,182" fill="#8BE9FD"/>
           <polygon points="212,150 174,166 174,182 206,182" fill="#8BE9FD"/>
-          <rect x="116" y="166" width="8" height="8" fill="#0D0E11"/>
-          <rect x="196" y="166" width="8" height="8" fill="#0D0E11"/>
+          <rect x="116" y="166" width="8" height="8" fill="#090A0D"/>
+          <rect x="196" y="166" width="8" height="8" fill="#090A0D"/>
         `;
       } else if (mood === 'happy') {
         faceEl.innerHTML = `
@@ -732,30 +765,13 @@
     }
     setMood('fierce');
 
-    // 2. Desbloqueo de Clave ASTRO STUDIO
-    function unlockStudio(e) {
-      e.preventDefault();
-      const val = document.getElementById('astro-key-input').value.trim().toUpperCase();
-      const err = document.getElementById('key-error');
-      if (val.startsWith('ASTRO-') && val.length >= 8) {
-        err.classList.add('hidden');
-        document.getElementById('key-gate').classList.add('hidden');
-        const ws = document.getElementById('studio-workspace');
-        ws.classList.remove('hidden');
-        ws.classList.add('grid');
-        initPixelGrid();
-      } else {
-        err.classList.remove('hidden');
-      }
-    }
-
-    // 3. Editor Matriz Pixel LED (16x8)
+    // Editor Matriz Pixel LED (16x8)
     const ROWS = 8, COLS = 16;
     let pixelState = Array.from({ length: ROWS }, () => Array(COLS).fill(false));
 
     function initPixelGrid() {
       const grid = document.getElementById('pixel-grid');
-      if (grid.children.length > 0) return;
+      if (!grid || grid.children.length > 0) return;
       for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
           const cell = document.createElement('button');
@@ -774,8 +790,7 @@
     }
 
     function renderGrid() {
-      const cells = document.querySelectorAll('#pixel-grid .pixel-cell');
-      cells.forEach(cell => {
+      document.querySelectorAll('#pixel-grid .pixel-cell').forEach(cell => {
         const r = +cell.dataset.r;
         const c = +cell.dataset.c;
         cell.classList.toggle('active', pixelState[r][c]);
@@ -790,23 +805,14 @@
     function applyPresetPixel(type) {
       clearPixelGrid();
       if (type === 'angry') {
-        const coords = [
-          [2,2],[3,3],[4,4],[5,2],[5,3],[5,4],[4,2],
-          [2,13],[3,12],[4,11],[5,13],[5,12],[5,11],[4,13]
-        ];
-        coords.forEach(([r,c]) => pixelState[r][c] = true);
+        [[2,2],[3,3],[4,4],[5,2],[5,3],[5,4],[4,2],[2,13],[3,12],[4,11],[5,13],[5,12],[5,11],[4,13]]
+          .forEach(([r,c]) => pixelState[r][c] = true);
       } else if (type === 'heart') {
-        const coords = [
-          [2,2],[2,4],[3,1],[3,2],[3,3],[3,4],[3,5],[4,2],[4,3],[4,4],[5,3],
-          [2,11],[2,13],[3,10],[3,11],[3,12],[3,13],[3,14],[4,11],[4,12],[4,13],[5,12]
-        ];
-        coords.forEach(([r,c]) => pixelState[r][c] = true);
+        [[2,2],[2,4],[3,1],[3,2],[3,3],[3,4],[3,5],[4,2],[4,3],[4,4],[5,3],[2,11],[2,13],[3,10],[3,11],[3,12],[3,13],[3,14],[4,11],[4,12],[4,13],[5,12]]
+          .forEach(([r,c]) => pixelState[r][c] = true);
       } else if (type === 'wink') {
-        const coords = [
-          [3,2],[2,3],[2,4],[3,5],
-          [4,10],[4,11],[4,12],[4,13]
-        ];
-        coords.forEach(([r,c]) => pixelState[r][c] = true);
+        [[3,2],[2,3],[2,4],[3,5],[4,10],[4,11],[4,12],[4,13]]
+          .forEach(([r,c]) => pixelState[r][c] = true);
       }
       renderGrid();
     }
@@ -825,7 +831,7 @@
       document.getElementById('inicio').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // 4. Consola IA Simulada
+    // Consola IA
     function sendAiPrompt(e) {
       e.preventDefault();
       const input = document.getElementById('ai-prompt-input');
@@ -837,18 +843,18 @@
       input.value = '';
 
       setTimeout(() => {
-        let reply = "Procesado en el núcleo neuronal de Astro. Matriz OLED actualizada y lista para sincronizar.";
+        let reply = "Procesado en el núcleo neuronal de Astro. Matriz OLED actualizada.";
         if (userMsg.toLowerCase().includes('gmail')) {
-          reply = "Tu bandeja Gmail vinculada está despejada. Te avisaré con un destello azul hielo si llega algo urgente.";
+          reply = "Tu bandeja Gmail vinculada está lista. Te avisaré con un destello azul hielo si llega algo urgente.";
         } else if (userMsg.toLowerCase().includes('bateria') || userMsg.toLowerCase().includes('batería')) {
-          reply = "Autonomía actual al 94% (~68 horas restantes en modo compañero activo).";
+          reply = "Autonomía actual al 94% (~68 horas restantes).";
         }
         box.innerHTML += `<div class="text-charcoal"><strong class="text-carbon">[ASTRO]:</strong> ${reply}</div>`;
         box.scrollTop = box.scrollHeight;
-      }, 350);
+      }, 300);
     }
 
-    // 5. Tienda & Carrito
+    // Tienda & Carrito
     let cart = [];
     function toggleCart() {
       document.getElementById('cart-drawer').classList.toggle('hidden');
@@ -863,15 +869,9 @@
     }
 
     function updateCartUI() {
-      const countEl = document.getElementById('cart-count');
+      document.getElementById('cart-count').textContent = cart.reduce((acc, i) => acc + i.qty, 0);
+      document.getElementById('cart-total').textContent = `$${cart.reduce((acc, i) => acc + i.price * i.qty, 0)} USD`;
       const itemsEl = document.getElementById('cart-items');
-      const totalEl = document.getElementById('cart-total');
-
-      const totalQty = cart.reduce((acc, i) => acc + i.qty, 0);
-      const totalPrice = cart.reduce((acc, i) => acc + i.price * i.qty, 0);
-
-      countEl.textContent = totalQty;
-      totalEl.textContent = `$${totalPrice} USD`;
 
       if (cart.length === 0) {
         itemsEl.innerHTML = '<p class="text-xs font-mono text-charcoal/60">Tu carrito está vacío.</p>';
@@ -908,27 +908,24 @@
       });
     }
 
-    // 6. Generador de Cuenta Gmail Astro
-    let latestGeneratedKey = '';
+    // Generador de Cuenta Gmail
     function generateAstroGmail(e) {
       e.preventDefault();
       const rawPrefix = document.getElementById('gmail-prefix').value.trim().toLowerCase().replace(/[^a-z0-9.]/g, '');
       const prefix = rawPrefix || 'astro.user';
       const email = `${prefix}@gmail.com`;
       const pass = 'Astro#' + Math.floor(1000 + Math.random() * 9000) + 'Led';
-      latestGeneratedKey = 'ASTRO-' + Math.random().toString(36).substring(2, 6).toUpperCase();
+      const newKey = 'ASTRO-' + Math.random().toString(36).substring(2, 6).toUpperCase();
+      VALID_KEYS.push(newKey);
 
       document.getElementById('res-email').textContent = email;
       document.getElementById('res-pass').textContent = pass;
-      document.getElementById('res-key').textContent = latestGeneratedKey;
+      document.getElementById('res-key').textContent = newKey;
       document.getElementById('gmail-result').classList.remove('hidden');
     }
 
-    function useGeneratedKey() {
-      if (!latestGeneratedKey) return;
-      document.getElementById('astro-key-input').value = latestGeneratedKey;
-      document.getElementById('studio').scrollIntoView({ behavior: 'smooth' });
-    }
+    // Inicializar cuadrícula por si se navega directo
+    window.addEventListener('DOMContentLoaded', initPixelGrid);
   </script>
 </body>
 </html>
