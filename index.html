@@ -1,0 +1,566 @@
+<title>Astro</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Layout: barra superior con las cuatro secciones; cada sección es una vista. Acceso por clave y anuncios comparten pantalla. */
+:root {
+  --bg: #EDF0F6;
+  --surface: #FFFFFF;
+  --ink: #101B33;
+  --muted: #56637F;
+  --line: #D5DBE8;
+  --soft: #E3E8F3;
+  --accent: #D9480F;
+  --accent-ink: #FFFFFF;
+  --ok: #1B7F4B;
+  --bad: #B42318;
+  --ad: #F6F7FB;
+  --f-display: 'Unbounded', 'Trebuchet MS', sans-serif;
+  --f-body: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B1322; --surface: #131E34; --ink: #E7ECF7; --muted: #9AA7C4; --line: #26334F;
+    --soft: #1B2944; --accent: #FF8A5C; --accent-ink: #1A0B03; --ok: #5BD08F; --bad: #FF8F85; --ad: #0F192D;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B1322; --surface: #131E34; --ink: #E7ECF7; --muted: #9AA7C4; --line: #26334F;
+  --soft: #1B2944; --accent: #FF8A5C; --accent-ink: #1A0B03; --ok: #5BD08F; --bad: #FF8F85; --ad: #0F192D;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.55; }
+h1, h2, h3 { font-family: var(--f-display); font-weight: 500; line-height: 1.15; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+a { color: inherit; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Header */
+.top { border-bottom: 1px solid var(--line); background: var(--surface); }
+.top .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding-block: 14px; }
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--f-display); font-weight: 700; font-size: 20px; text-decoration: none; }
+.brand svg { width: 30px; height: 30px; }
+.nav { display: flex; gap: 4px; overflow-x: auto; flex: 1 1 auto; min-width: 0; }
+.nav a { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 8px; text-decoration: none; font-weight: 500; color: var(--muted); white-space: nowrap; }
+.nav a:hover { background: var(--soft); color: var(--ink); }
+.nav a[aria-current="page"] { background: var(--ink); color: var(--bg); }
+.nav svg { width: 13px; height: 13px; }
+.chip { font-family: var(--f-mono); font-size: 12px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+main { padding-block: 40px 56px; }
+.view { display: flex; flex-direction: column; gap: 32px; }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); gap: 32px; align-items: center; }
+.hero h1 { font-size: clamp(30px, 5vw, 50px); font-weight: 700; }
+.hero p { margin-top: 16px; font-size: 18px; color: var(--muted); max-width: 46ch; }
+.hero .cta { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px; }
+.orbit { width: 100%; max-width: 320px; margin-inline: auto; display: block; }
+.orbit .ring { fill: none; stroke: var(--line); stroke-width: 1.5; }
+.orbit .core { fill: var(--accent); }
+.orbit .moon { fill: var(--ink); }
+.orbit .spin { transform-box: fill-box; transform-origin: center; animation: spin 80s linear infinite; }
+.orbit .spin.rev { animation-duration: 55s; animation-direction: reverse; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .orbit .spin { animation: none; } }
+
+/* Cards & forms */
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.card h2 { font-size: 20px; }
+.card .lead { color: var(--muted); }
+.step { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+label { display: block; font-weight: 500; font-size: 14px; margin-bottom: 6px; }
+input, select, textarea { width: 100%; font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 11px 12px; }
+textarea { min-height: 260px; resize: vertical; line-height: 1.6; }
+input::placeholder, textarea::placeholder { color: var(--muted); opacity: 0.8; }
+.key-input { font-family: var(--f-mono); font-size: 18px; letter-spacing: 0.06em; text-transform: uppercase; }
+.btn { font: inherit; font-weight: 700; border: 0; border-radius: 8px; padding: 11px 20px; background: var(--accent); color: var(--accent-ink); cursor: pointer; text-decoration: none; display: inline-block; text-align: center; }
+.btn:hover { filter: brightness(1.08); }
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); font-weight: 500; }
+.btn.ghost:hover { background: var(--soft); filter: none; }
+.btn.small { padding: 6px 12px; font-size: 14px; }
+.row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.field { display: flex; flex-direction: column; }
+.form { display: flex; flex-direction: column; gap: 14px; }
+.msg-line { font-size: 14px; min-height: 1.4em; }
+.msg-line.bad { color: var(--bad); }
+.msg-line.good { color: var(--ok); }
+.note { font-size: 13px; color: var(--muted); }
+.mono { font-family: var(--f-mono); }
+.pill { display: inline-block; font-family: var(--f-mono); font-size: 12px; background: var(--soft); border-radius: 999px; padding: 4px 10px; }
+
+/* Access + ads */
+.access { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
+.side { display: flex; flex-direction: column; align-items: center; gap: 16px; min-width: 0; }
+.ad { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; background: var(--ad); border: 1px dashed var(--line); border-radius: 10px; color: var(--muted); text-align: center; padding: 12px; font-size: 13px; }
+.ad strong { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+.ad-300 { width: 100%; max-width: 300px; aspect-ratio: 300 / 250; }
+.ad-728 { width: 100%; max-width: 728px; height: 90px; margin-inline: auto; }
+
+/* Locked panel */
+.locked { align-items: flex-start; }
+.locked svg { width: 28px; height: 28px; color: var(--muted); }
+
+/* Chat */
+.chat { display: flex; flex-direction: column; gap: 14px; }
+.log { display: flex; flex-direction: column; gap: 10px; min-height: 280px; max-height: 420px; overflow-y: auto; padding: 4px; }
+.msg { max-width: 85%; padding: 10px 14px; border-radius: 12px; overflow-wrap: anywhere; }
+.msg.astro { background: var(--soft); align-self: flex-start; }
+.msg.me { background: var(--accent); color: var(--accent-ink); align-self: flex-end; }
+.chat form { display: flex; gap: 10px; }
+.chat form input { flex: 1 1 auto; min-width: 0; }
+
+/* Blog */
+.editor { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
+.posts { display: flex; flex-direction: column; gap: 12px; }
+.post { border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 6px; background: var(--bg); min-width: 0; }
+.post h3 { font-size: 15px; overflow-wrap: anywhere; }
+.post p { font-size: 14px; color: var(--muted); overflow-wrap: anywhere; }
+.page-head { display: flex; flex-direction: column; gap: 8px; }
+.page-head h1 { font-size: clamp(24px, 4vw, 34px); font-weight: 700; }
+.page-head p { color: var(--muted); max-width: 60ch; }
+
+footer { border-top: 1px solid var(--line); padding-block: 20px; color: var(--muted); font-size: 13px; }
+
+@media (max-width: 860px) {
+  .hero, .grid-2, .access, .editor { grid-template-columns: minmax(0, 1fr); }
+  .orbit { max-width: 220px; }
+  .hero .orbit-wrap { order: -1; }
+}
+@media (max-width: 480px) {
+  .card { padding: 18px; }
+  .chat form { flex-direction: column; }
+}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="Astro, ir al inicio">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="16" r="4.5" fill="var(--accent)"/><circle cx="26.5" cy="9.5" r="2.5" fill="currentColor"/></svg>
+      Astro
+    </a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#inicio" data-nav="inicio">Inicio</a>
+      <a href="#acceso" data-nav="acceso">Acceso</a>
+      <a href="#contenido" data-nav="contenido">Contenido
+        <svg class="nav-lock" viewBox="0 0 16 16" aria-label="bloqueado"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="currentColor"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      </a>
+      <a href="#blog" data-nav="blog">Blog
+        <svg class="nav-lock" viewBox="0 0 16 16" aria-label="bloqueado"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="currentColor"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      </a>
+    </nav>
+    <span class="chip" id="chip">Sin cuenta</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- INICIO: sin clave -->
+  <section class="view" id="v-inicio">
+    <div class="hero">
+      <div>
+        <h1>Tu Astro, con su propia clave</h1>
+        <p>Crea tu cuenta con Gmail, pide tu Astro y entra a su contenido cuando recibas tu clave única.</p>
+        <div class="cta">
+          <a class="btn" href="#acceso">Ya tengo mi clave</a>
+          <a class="btn ghost" href="#blog">Ver el blog</a>
+        </div>
+      </div>
+      <div class="orbit-wrap">
+        <svg class="orbit" viewBox="0 0 320 320" role="img" aria-label="Un astro central con dos órbitas y dos lunas">
+          <circle class="ring" cx="160" cy="160" r="60"/>
+          <circle class="ring" cx="160" cy="160" r="105"/>
+          <circle class="ring" cx="160" cy="160" r="150"/>
+          <circle class="core" cx="160" cy="160" r="26"/>
+          <g class="spin"><circle class="moon" cx="160" cy="55" r="9"/></g>
+          <g class="spin rev"><circle class="moon" cx="310" cy="160" r="6"/><circle class="moon" cx="10" cy="160" r="4"/></g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <span class="step">Paso 1</span>
+        <h2>Crea tu cuenta</h2>
+        <p class="lead">Usa tu correo de Gmail para registrarte.</p>
+        <form class="form" id="acct-form" novalidate>
+          <div class="field">
+            <label for="email">Correo de Gmail</label>
+            <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="nombre@gmail.com">
+          </div>
+          <button class="btn" type="submit">Continuar con Gmail</button>
+          <p class="msg-line bad" id="email-err" role="alert"></p>
+        </form>
+        <div id="acct-done" hidden>
+          <p class="msg-line good">Cuenta lista: <span class="mono" id="acct-email-out"></span></p>
+          <div class="row" style="margin-top:12px"><button class="btn ghost small" type="button" id="change-email">Usar otro correo</button></div>
+        </div>
+        <p class="note">Versión de prueba: el correo se guarda solo en este navegador. El inicio de sesión real con Google se conecta después.</p>
+      </div>
+
+      <div class="card">
+        <span class="step">Paso 2</span>
+        <h2>Pide tu Astro</h2>
+        <p class="lead">Cuéntanos cómo lo quieres y te asignaremos su clave única.</p>
+        <form class="form" id="req-form" novalidate>
+          <div class="field">
+            <label for="astro-name">Nombre de tu Astro</label>
+            <input id="astro-name" type="text" maxlength="30" placeholder="Por ejemplo: Nova">
+          </div>
+          <div class="field">
+            <label for="purpose">¿Para qué lo quieres?</label>
+            <select id="purpose">
+              <option>Escribir mi blog</option>
+              <option>Estudiar y aprender</option>
+              <option>Mi negocio</option>
+              <option>Otra cosa</option>
+            </select>
+          </div>
+          <button class="btn" type="submit">Pedir mi Astro</button>
+          <p class="msg-line" id="req-msg" role="status"></p>
+        </form>
+        <p class="note">Versión de prueba: la solicitud todavía no llega a ningún servidor.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACCESO: clave + anuncios -->
+  <section class="view" id="v-acceso" hidden>
+    <div class="page-head">
+      <h1>Acceso con clave</h1>
+      <p>Cada Astro tiene una clave única. Escríbela para abrir su contenido y el editor de blog.</p>
+    </div>
+    <div class="access">
+      <div class="card">
+        <div id="gate-form-wrap">
+          <form class="form" id="gate-form" novalidate>
+            <div class="field">
+              <label for="key">Clave de tu Astro</label>
+              <input class="key-input" id="key" type="text" autocomplete="off" spellcheck="false" maxlength="14" placeholder="ASTRO-XXXX-XXXX">
+            </div>
+            <button class="btn" type="submit">Desbloquear</button>
+            <p class="msg-line bad" id="key-err" role="alert"></p>
+            <p class="note">Para probar esta página usa la clave <span class="pill">ASTRO-DEMO-0001</span></p>
+          </form>
+        </div>
+        <div id="gate-ok" hidden>
+          <p class="msg-line good">Astro desbloqueado: <span class="mono" id="gate-key-out"></span></p>
+          <div class="row" style="margin-top:14px">
+            <a class="btn" href="#contenido">Abrir contenido</a>
+            <a class="btn ghost" href="#blog">Editar blog</a>
+            <button class="btn ghost" type="button" id="relock">Bloquear de nuevo</button>
+          </div>
+        </div>
+      </div>
+      <aside class="side" aria-label="Publicidad">
+        <div class="ad ad-300"><strong>Publicidad</strong><span>300 × 250</span><span>Aquí va el código del anuncio</span></div>
+      </aside>
+    </div>
+    <div class="ad ad-728"><strong>Publicidad</strong><span>728 × 90 · aquí va el código del anuncio</span></div>
+  </section>
+
+  <!-- CONTENIDO -->
+  <section class="view" id="v-contenido" hidden>
+    <div class="card locked" id="lock-contenido">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="currentColor"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      <h2>El contenido está bloqueado</h2>
+      <p class="lead">Escribe la clave de tu Astro para entrar.</p>
+      <a class="btn" href="#acceso">Ir a Acceso</a>
+    </div>
+    <div id="panel-contenido" hidden>
+      <div class="page-head">
+        <h1>Contenido de <span id="astro-name-c">Astro</span></h1>
+        <p>Conversa con tu Astro. Aquí vivirá todo lo que tu clave desbloquea.</p>
+      </div>
+      <div class="access" style="margin-top:24px">
+        <div class="card chat">
+          <div class="log" id="chat-log" aria-live="polite">
+            <div class="msg astro">Hola, soy tu Astro. Escríbeme lo que necesites.</div>
+          </div>
+          <form id="chat-form">
+            <input id="chat-input" type="text" autocomplete="off" placeholder="Escribe un mensaje" aria-label="Mensaje para tu Astro">
+            <button class="btn" type="submit">Enviar</button>
+          </form>
+          <p class="note">Versión de prueba: Astro todavía no está conectado a un modelo de IA.</p>
+        </div>
+        <aside class="side" aria-label="Publicidad">
+          <div class="ad ad-300"><strong>Publicidad</strong><span>300 × 250</span><span>Aquí va el código del anuncio</span></div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOG -->
+  <section class="view" id="v-blog" hidden>
+    <div class="card locked" id="lock-blog">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="currentColor"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      <h2>El blog está bloqueado</h2>
+      <p class="lead">Desbloquea tu Astro con su clave para editar el blog.</p>
+      <a class="btn" href="#acceso">Ir a Acceso</a>
+    </div>
+    <div id="panel-blog" hidden>
+      <div class="page-head">
+        <h1>Blog</h1>
+        <p>Escribe tus entradas y pídele a Astro que te ayude a redactarlas, sin costo.</p>
+      </div>
+      <div class="editor" style="margin-top:24px">
+        <div class="card">
+          <form class="form" id="post-form" novalidate>
+            <div class="field">
+              <label for="post-title">Título</label>
+              <input id="post-title" type="text" maxlength="90" placeholder="Título de la entrada">
+            </div>
+            <div class="field">
+              <label for="post-body">Texto</label>
+              <textarea id="post-body" placeholder="Escribe aquí o pídele un borrador a Astro"></textarea>
+            </div>
+            <div class="row">
+              <button class="btn" type="submit">Guardar entrada</button>
+              <button class="btn ghost" type="button" id="draft-btn">Pedir borrador a Astro</button>
+              <span class="note" id="wc">0 palabras</span>
+            </div>
+            <p class="msg-line" id="blog-msg" role="status"></p>
+            <p class="note">Versión de prueba: el borrador es una estructura de ejemplo. Cuando la IA esté conectada, Astro escribirá el texto completo.</p>
+          </form>
+        </div>
+        <aside class="side" style="align-items:stretch" aria-label="Entradas y publicidad">
+          <div class="card">
+            <h2>Tus entradas</h2>
+            <div class="posts" id="posts"></div>
+          </div>
+          <div class="ad ad-300"><strong>Publicidad</strong><span>300 × 250</span><span>Aquí va el código del anuncio</span></div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">Versión de prueba. Las cuentas, la validación de claves, los anuncios y la IA se conectan en la siguiente etapa.</div>
+</footer>
+
+<script>
+(function () {
+  var VIEWS = ['inicio', 'acceso', 'contenido', 'blog'];
+  var DEMO_KEY = 'ASTRO-DEMO-0001';
+  var state = { email: null, astro: 'Astro', unlocked: false, key: null, posts: [] };
+
+  function $(id) { return document.getElementById(id); }
+
+  function load() {
+    try {
+      var e = localStorage.getItem('astro.email');
+      if (e) state.email = e;
+      var p = localStorage.getItem('astro.posts');
+      if (p) { var a = JSON.parse(p); if (Array.isArray(a)) state.posts = a; }
+    } catch (err) {}
+  }
+  function save() {
+    try {
+      if (state.email) localStorage.setItem('astro.email', state.email); else localStorage.removeItem('astro.email');
+      localStorage.setItem('astro.posts', JSON.stringify(state.posts));
+    } catch (err) {}
+  }
+
+  function route() {
+    var h = location.hash.replace('#', '');
+    if (VIEWS.indexOf(h) < 0) h = 'inicio';
+    VIEWS.forEach(function (v) {
+      $('v-' + v).hidden = (v !== h);
+      var a = document.querySelector('[data-nav="' + v + '"]');
+      if (a) { if (v === h) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); }
+    });
+    window.scrollTo(0, 0);
+  }
+
+  function render() {
+    $('chip').textContent = state.email ? state.email : 'Sin cuenta';
+    $('acct-form').hidden = !!state.email;
+    $('acct-done').hidden = !state.email;
+    $('acct-email-out').textContent = state.email || '';
+    $('gate-form-wrap').hidden = state.unlocked;
+    $('gate-ok').hidden = !state.unlocked;
+    $('gate-key-out').textContent = state.key ? 'ASTRO-••••-' + state.key.slice(-4) : '';
+    ['contenido', 'blog'].forEach(function (v) {
+      $('lock-' + v).hidden = state.unlocked;
+      $('panel-' + v).hidden = !state.unlocked;
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.nav-lock'), function (el) { el.hidden = state.unlocked; });
+    $('astro-name-c').textContent = state.astro;
+  }
+
+  function setMsg(el, text, kind) {
+    el.textContent = text;
+    el.className = 'msg-line' + (kind ? ' ' + kind : '');
+  }
+
+  /* Cuenta */
+  $('acct-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = $('email').value.trim().toLowerCase();
+    if (!/^[a-z0-9._%+-]+@(gmail|googlemail)\.com$/.test(v)) {
+      $('email-err').textContent = 'Escribe un correo de Gmail, por ejemplo nombre@gmail.com.';
+      return;
+    }
+    $('email-err').textContent = '';
+    state.email = v;
+    save();
+    render();
+  });
+  $('change-email').addEventListener('click', function () {
+    state.email = null;
+    $('email').value = '';
+    save();
+    render();
+  });
+
+  /* Pedir Astro */
+  $('req-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var msg = $('req-msg');
+    if (!state.email) { setMsg(msg, 'Primero crea tu cuenta con Gmail en el paso 1.', 'bad'); return; }
+    var name = $('astro-name').value.trim();
+    if (!name) { setMsg(msg, 'Ponle un nombre a tu Astro.', 'bad'); return; }
+    state.astro = name;
+    render();
+    setMsg(msg, 'Solicitud de ' + name + ' registrada en esta vista de prueba. Todavía no llega a ningún servidor.', 'good');
+  });
+
+  /* Clave */
+  $('gate-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = $('key').value.trim().toUpperCase();
+    var err = $('key-err');
+    if (!/^ASTRO-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(v)) { err.textContent = 'La clave tiene este formato: ASTRO-XXXX-XXXX.'; return; }
+    if (v !== DEMO_KEY) { err.textContent = 'Esa clave no está registrada.'; return; }
+    err.textContent = '';
+    state.unlocked = true;
+    state.key = v;
+    $('key').value = '';
+    render();
+  });
+  $('relock').addEventListener('click', function () {
+    state.unlocked = false;
+    state.key = null;
+    render();
+  });
+
+  /* Chat */
+  function addMsg(text, who) {
+    var d = document.createElement('div');
+    d.className = 'msg ' + who;
+    d.textContent = text;
+    $('chat-log').appendChild(d);
+    $('chat-log').scrollTop = $('chat-log').scrollHeight;
+  }
+  $('chat-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var t = $('chat-input').value.trim();
+    if (!t) return;
+    addMsg(t, 'me');
+    $('chat-input').value = '';
+    addMsg('Recibí tu mensaje. Esto es una vista de prueba: la IA se conecta en la siguiente etapa y responderá aquí.', 'astro');
+  });
+
+  /* Blog */
+  function updateWc() {
+    var t = $('post-body').value.trim();
+    var n = t ? t.split(/\s+/).length : 0;
+    $('wc').textContent = n + (n === 1 ? ' palabra' : ' palabras');
+  }
+  $('post-body').addEventListener('input', updateWc);
+
+  $('draft-btn').addEventListener('click', function () {
+    var title = $('post-title').value.trim();
+    var msg = $('blog-msg');
+    if (!title) { setMsg(msg, 'Escribe primero un título para que Astro sepa de qué escribir.', 'bad'); return; }
+    var draft = 'Introducción\nEn una o dos frases, cuenta de qué trata "' + title + '" y por qué le importa a quien te lee.\n\n' +
+      'Primer punto\nExplica la idea principal con un ejemplo concreto.\n\n' +
+      'Segundo punto\nAgrega un detalle, un dato o una experiencia propia.\n\n' +
+      'Tercer punto\nResponde la duda más común sobre el tema.\n\n' +
+      'Cierre\nResume lo esencial e invita a leer la siguiente entrada.';
+    var cur = $('post-body').value.trim();
+    $('post-body').value = cur ? cur + '\n\n' + draft : draft;
+    updateWc();
+    setMsg(msg, 'Borrador de ejemplo agregado. Reemplaza cada sección con tu texto.', 'good');
+  });
+
+  function renderPosts() {
+    var box = $('posts');
+    box.textContent = '';
+    if (!state.posts.length) {
+      var p = document.createElement('p');
+      p.className = 'note';
+      p.textContent = 'Todavía no hay entradas. Guarda la primera con el formulario.';
+      box.appendChild(p);
+      return;
+    }
+    state.posts.forEach(function (post) {
+      var art = document.createElement('article');
+      art.className = 'post';
+      var h = document.createElement('h3');
+      h.textContent = post.title;
+      var d = document.createElement('span');
+      d.className = 'note';
+      d.textContent = post.date;
+      var s = document.createElement('p');
+      s.textContent = post.body.length > 110 ? post.body.slice(0, 110) + '…' : post.body;
+      var row = document.createElement('div');
+      row.className = 'row';
+      var edit = document.createElement('button');
+      edit.type = 'button'; edit.className = 'btn ghost small'; edit.textContent = 'Editar';
+      edit.addEventListener('click', function () {
+        $('post-title').value = post.title;
+        $('post-body').value = post.body;
+        state.posts = state.posts.filter(function (x) { return x.id !== post.id; });
+        save(); renderPosts(); updateWc();
+        setMsg($('blog-msg'), 'Editando "' + post.title + '". Guarda para volver a publicarla en la lista.', '');
+      });
+      var del = document.createElement('button');
+      del.type = 'button'; del.className = 'btn ghost small'; del.textContent = 'Quitar';
+      del.addEventListener('click', function () {
+        state.posts = state.posts.filter(function (x) { return x.id !== post.id; });
+        save(); renderPosts();
+      });
+      row.appendChild(edit); row.appendChild(del);
+      art.appendChild(h); art.appendChild(d); art.appendChild(s); art.appendChild(row);
+      box.appendChild(art);
+    });
+  }
+
+  $('post-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var title = $('post-title').value.trim();
+    var body = $('post-body').value.trim();
+    var msg = $('blog-msg');
+    if (!title && !body) { setMsg(msg, 'Escribe un título o un texto antes de guardar.', 'bad'); return; }
+    state.posts.unshift({
+      id: Date.now(),
+      title: title || 'Sin título',
+      body: body,
+      date: new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' })
+    });
+    save();
+    renderPosts();
+    $('post-title').value = '';
+    $('post-body').value = '';
+    updateWc();
+    setMsg(msg, 'Entrada guardada.', 'good');
+  });
+
+  load();
+  render();
+  renderPosts();
+  updateWc();
+  route();
+  window.addEventListener('hashchange', route);
+})();
+</script>
